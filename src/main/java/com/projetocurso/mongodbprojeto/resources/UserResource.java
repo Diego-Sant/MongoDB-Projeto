@@ -73,6 +73,7 @@ public class UserResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	// Encontrar posts de um usuário
 	@GetMapping(value = "/{id}/posts")
 	public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
 		User obj = service.findById(id);
