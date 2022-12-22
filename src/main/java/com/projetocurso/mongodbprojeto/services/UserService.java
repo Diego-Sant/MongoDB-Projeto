@@ -31,6 +31,11 @@ public class UserService {
 		return repo.insert(obj);
 	}
 	
+	public void delete(String id) {
+		findById(id);
+		repo.deleteById(id);
+	}
+	
 	// Usado DTO em UserService ao em vez do UserDTO para facilitar uma possível manutenção no banco de dados
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(),objDto.getName(), objDto.getEmail());
