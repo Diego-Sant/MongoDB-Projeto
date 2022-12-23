@@ -1,5 +1,6 @@
 package com.projetocurso.mongodbprojeto.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,26 @@ public class PostResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	// Buscar por palavra chave no título
 	@GetMapping(value = "/titlesearch") // Usado @RequestParam pois depois de /titlesearch não será usado "/" e sim "?text="
 	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value="text", defaultValue="") String text) {
 		text = URL.decodeParam(text);
 		List<Post> list = service.findByTitle(text);
+		return ResponseEntity.ok().body(list);
+	}
+	
+	// Busca completa
+	@GetMapping(value = "/fullsearch")
+	public ResponseEntity<List<Post>> fullSearch(
+			@RequestParam(value="text", defaultValue="") String text,
+			@RequestParam(value="minDate", defaultValue="") String minDate,
+			@RequestParam(value="maxDate", defaultValue="") String maxDate) {
+		text = URL.decodeParam(text);
+		
+		Date min = URL.convertDate(minDate, new Date(0L)); // (0L) significa que irá pegar o menor valor do sistema caso não seja específicado a data mínima
+		Date max = URL.convertDate(maxDate, new Date()); // Irá pegar a data atual se o valor máximo não for específicado
+		
+		List<Post> list = service.fullSearch(text, min, max);
 		return ResponseEntity.ok().body(list);
 	}
 	
